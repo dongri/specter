@@ -1,0 +1,10 @@
+{
+  "webhook_url": "https://discord.com/api/webhooks/WEBHOOK_ID/WEBHOOK_TOKEN",
+  "poll_seconds": 2,
+  "database_path": null,
+  "slack_bundle_ids": [
+    "com.tinyspeck.slackmacgap"
+  ],
+  "include_regex": null,
+  "exclude_regex": null
+}

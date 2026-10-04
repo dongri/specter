@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+config.json
+*.sqlite3*
+.venv/
+state/
+.specter.lock
