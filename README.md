@@ -65,7 +65,39 @@ python3 specter.py test
 python3 specter.py run
 ```
 
-After `Skipped existing notifications` appears, receive a new Slack notification and check Discord. Logs appear in the terminal. Press **Ctrl+C** to stop, and keep the Mac awake while forwarding.
+After `Skipped existing notifications` appears, receive a new Slack notification and check Discord. Logs appear in the terminal. Press **Ctrl+C** to stop, and keep the Mac awake while forwarding. To keep forwarding with the lid closed, see [Running with the lid closed](#running-with-the-lid-closed).
+
+## Running with the lid closed
+
+Closing the lid puts the Mac to sleep unless an external display is connected. While the Mac sleeps, Slack disconnects and posts no notifications, so Specter has nothing to forward. `caffeinate` cannot prevent sleep when the lid is closed. To keep the system awake with the lid closed, disable sleep system-wide:
+
+```sh
+sudo pmset -a disablesleep 1
+python3 specter.py run
+```
+
+Restore normal sleep when you stop forwarding:
+
+```sh
+sudo pmset -a disablesleep 0
+```
+
+The setting persists across restarts until you restore it. Check the current value with `pmset -g | grep -i sleepdisabled`. `disablesleep` is not documented in `man pmset` and may stop working in future macOS releases.
+
+While sleep is disabled:
+
+- Keep the Slack app running and the terminal running `run` open.
+- Connect the power adapter and avoid enclosed spaces such as bags; a closed, awake Mac can overheat and drain the battery.
+- Closing the lid does not reliably lock the screen. Lock it manually with **Control+Command+Q**.
+- Run only `pmset` with `sudo`. Running `specter.py` as root changes the home directory and Full Disk Access target, so the notification database is not found.
+
+Slack must still post notifications while the display is off or the screen is locked. Check the following settings:
+
+- **System Settings > Notifications:** Allow notifications when the display is sleeping and when the screen is locked. For Slack, turn on **Allow notifications** and **Show in Notification Center**.
+- **System Settings > Focus:** Make sure no Focus turns on automatically during forwarding hours, or allow Slack in that Focus.
+- **Slack > Settings > Notifications:** Make sure the notification schedule covers forwarding hours and notifications are not paused.
+
+To verify, start `run`, send `/remind me in 3 minutes test` in Slack, close the lid, and check Discord from another device.
 
 ## Configuration
 
